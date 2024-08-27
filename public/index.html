@@ -4,10 +4,811 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>3M-SECURE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" sizes="16x16" href="images/3msecure.svg" type="image/x-svg" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #1F3B4D;
+            color: #fff;
+            padding: 20px 0;
+            font-family: 'Inria Sans', sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .hero .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 37px;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            margin-left: -20px;
+        }
+
+        .logo span {
+            color: #7ED957;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav li {
+            margin-right: 40px;
+        }
+
+        .nav a {
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            font-size: 25px;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #28a745;
+        }
+
+        .btn {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .hero {
+            background: linear-gradient(to bottom, #35607A, #1473AE);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 20vh;
+        }
+
+        .hero__intro {
+            font-family: 'Roboto', sans-serif;
+            font-size: 34px;
+            margin-bottom: -20px;
+        }
+
+        .hero__title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 70px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            max-width: 1500px;
+        }
+
+        .hero__subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+
+        /* Features Styles */
+        .features {
+            background: linear-gradient(to bottom, #DBE7E9, #E9E9E9);
+            padding: 80px 0;
+        }
+
+        .features .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            width: calc(25% - 20px);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .feature__icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .feature__title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature__description {
+            font-size: 20px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        @media (max-width: 1024px) {
+            .feature {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .feature {
+                width: 100%;
+            }
+        }
+
+        /* Demo Styles */
+        .demo {
+            background-color: #C3D1DE;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .demo__title {
+            font-size: 50px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 50px;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-container h2 {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+
+        /* Clients Styles */
+        .clients {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .clients__title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        .clients__logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clients__logos img {
+            margin: 20px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #212529;
+            color: #fff;
+            padding: 40px 0;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 40px;
+        }
+
+        .footer__heading {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .footer ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer li {
+            margin-bottom: 10px;
+            font-size: 19px;
+        }
+
+        .footer a {
+            color: #fff;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+        }
+
+        .social-icons img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 40px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e6f2f5;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffffff;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #007ea6;
+        }
+
+        /* General Mobile Styles */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .header {
+                padding: 10px 0;
+            }
+
+            .logo {
+                font-size: 30px;
+                padding: 10px;
+                margin-left: 0;
+            }
+
+            .nav {
+                display: block;
+                text-align: center;
+            }
+
+            .nav ul {
+                flex-direction: column;
+                margin-top: 10px;
+            }
+
+            .nav li {
+                margin: 10px 0;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero__title {
+                font-size: 40px;
+            }
+
+            .hero__subtitle {
+                font-size: 18px;
+            }
+
+            .features {
+                padding: 40px 0;
+            }
+
+            .feature {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .feature__icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .feature__title {
+                font-size: 20px;
+            }
+
+            .feature__description {
+                font-size: 16px;
+            }
+
+            .demo__title {
+                font-size: 36px;
+            }
+
+            .video-container {
+                max-width: 100%;
+                margin: 0 auto;
+                box-shadow: none;
+            }
+
+            .clients__title {
+                font-size: 28px;
+            }
+
+            .clients__logos {
+                flex-direction: column;
+            }
+
+            .clients__logos img {
+                height: 60px;
+                margin: 10px 0;
+            }
+
+            .footer__column {
+                text-align: center;
+            }
+
+            .footer__column ul {
+                padding: 0;
+            }
+
+            .footer__column li {
+                margin: 5px 0;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .copyright {
+                font-size: 16px;
+            }
+        }
+
+        /* Styles for mobile navigation */
+        .mobile-nav {
+            display: none;
+            background-color: #1F3B4D;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-nav li {
+            margin: 10px 0;
+        }
+
+        .mobile-nav a {
+            color: #fff;
+            font-size: 18px;
+            padding: 10px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-nav a:hover {
+            background-color: #28a745;
+        }
+
+        /* Toggle button visibility */
+        .mobile-nav-toggle {
+            display: block;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav-toggle {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+        }
+
+        /* Show mobile navigation by default */
+        .mobile-nav {
+            display: none;
+            /* Hidden by default */
+        }
+
+        .mobile-nav a[href="signup.html"] {
+            color: #7ED957;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-get-started {
+                display: none;
+            }
+        }
+
+        .mobile-nav li:last-child a {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .desktop-get-started,
+            .nav {
+                display: none;
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            .mobile-nav-toggle .btn {
+                padding: 5px 10px;
+                font-size: 16px;
+            }
+
+            .logo {
+                font-size: 24px;
+                margin-left: 0;
+            }
+
+            .mobile-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #1F3B4D;
+                display: none;
+            }
+
+            .mobile-nav ul {
+                padding: 0;
+                margin: 0;
+            }
+
+            .mobile-nav li {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .mobile-nav a {
+                padding: 15px 20px;
+                display: block;
+                color: #fff;
+                text-decoration: none;
+            }
+
+            .mobile-nav li:last-child a {
+                color: #28a745;
+                font-weight: bold;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .clients {
+                padding: 40px 0;
+            }
+
+            .clients__title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .clients__logos {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                justify-items: center;
+            }
+
+            .clients__logos img {
+                width: 80%;
+                height: auto;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer__column {
+                margin-bottom: 30px;
+            }
+
+            .footer__heading {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .footer li {
+                margin-bottom: 8px;
+                font-size: 16px;
+            }
+
+            .social-icons {
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .social-icons a {
+                margin: 0 8px;
+            }
+
+            .social-icons img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .copyright {
+                font-size: 14px;
+                margin-top: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo"><span>3M-</span>SECURE</a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#footer">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+            <div class="desktop-get-started">
+                <a href="signup.html" class="btn">Get Started</a>
+            </div>
+            <div class="mobile-nav-toggle">
+                <button class="btn btn-primary">Menu</button>
+            </div>
+        </div>
+
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#footer">Contact</a></li>
+                <li><a href="signup.html">Get Started</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero" id="home">
+        <div class="container">
+            <p class="hero__intro">Introducing 3m-secure</p>
+            <h1 class="hero__title">AI-Powered CyberSecurity Analyst for the Future</h1>
+            <p class="hero__subtitle">Detect, Analyze, and Prevent Suspicious Activities with 3m-secure</p>
+            <a href="signup.html" class="btn btn-primary">Signup for free</a>
+        </div>
+    </section>
+
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="feature">
+                <img src="images/file.png" alt="Log File Analysis Icon" class="feature__icon">
+                <h3 class="feature__title">Log file Analysis</h3>
+                <p class="feature__description">Instantly scan and process log files to detect anomalies. Our AI-powered
+                    system ensures you stay ahead of potential threats</p>
+            </div>
+
+            <div class="feature">
+                <img src="images/search.png" alt="Suspicious Activity Detection Icon" class="feature__icon">
+                <h3 class="feature__title">Suspicious Activity Detection</h3>
+                <p class="feature__description">Identify unusual patterns and activities within your logs with high
+                    accuracy.</p>
+            </div>
+
+            <div class="feature">
+                <img src="images/secure.png" alt="Preventive Recommendations Icon" class="feature__icon">
+                <h3 class="feature__title">Preventive Recommendations</h3>
+                <p class="feature__description">Receive recommendations to mitigate identified risks and enhance your
+                    cybersecurity posture. Proactively strengthen your defenses.</p>
+            </div>
+
+            <div class="feature">
+                <img src="images/present.png" alt="Report Generation Icon" class="feature__icon">
+                <h3 class="feature__title">Report Generation</h3>
+                <p class="feature__description">Generate detailed reports with insights into detected threats and system
+                    performance. To enable you make informed decisions with comprehensive analysis</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo" id="about">
+        <h2 class="demo__title">Behind the Magic</h2>
+        <div class="video-container">
+            <video autoplay loop muted>
+                <source src="images/Skpea.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+
+    <section class="clients">
+        <div class="container">
+            <h2 class="clients__title">Trusted by 100+ Startups and Businesses</h2>
+            <div class="clients__logos">
+                <img src="images/MedLinx.png" alt="MedLink Logo">
+                <img src="images/SKYPE.png" alt="Skype AI Logo">
+                <img src="images/logobeta.svg" alt="MyBetaHarvest Logo">
+                <img src="images/chillmate.2.png" alt="Chill Mate Logo">
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__column" id="footer">
+                <h4 class="footer__heading">Quick Link</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__column">
+                <h4 class="footer__heading">Contact</h4>
+                <ul>
+                    <li><a href="mailto:clementakhimien25@gmail.com">Email</a></li>
+                    <li>+2347012645977</li>
+                </ul>
+                <div class="social-icons">
+                    <a href="#"><img src="images/facebook.png" alt="Facebook Icon"></a>
+                    <a href="https://linkedin.com/in/akhimien-clement"><img src="images/linkedin.png"
+                            alt="LinkedIn Icon"></a>
+                    <a href="https://x.com/clement___10"><img src="images/twitter.png" alt="Twitter Icon"></a>
+                </div>
+            </div>
+
+            <div class="footer__column">
+                <h4 class="footer__heading">Legal Infromation</h4>
+                <ul>
+                    <li><a href="important.html">Privacy Policy</a></li>
+                    <li><a href="important.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="copyright">@ made by clement</p>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('.btn');
+
+        buttons.forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'scale(1.05)';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        document.querySelector('.mobile-nav-toggle button').addEventListener('click', (event) => {
+            event.stopPropagation();
+            const mobileNav = document.querySelector('.mobile-nav');
+            mobileNav.style.display = mobileNav.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (event) => {
+            const mobileNav = document.querySelector('.mobile-nav');
+            const toggleButton = document.querySelector('.mobile-nav-toggle button');
+            if (!mobileNav.contains(event.target) && !toggleButton.contains(event.target)) {
+                mobileNav.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
 

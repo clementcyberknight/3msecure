@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File-Scan - 3M-Secure</title>
+    <link rel="icon" sizes="16x16" href="images/3msecure.svg" type="image/x-svg" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #1c3144;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            padding: 10px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #7ED957;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav li {
+            margin-right: 20px;
+        }
+
+        .nav a {
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            font-size: 25px;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #28a745;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 40px;
+            color: #5D5D5D;
+            text-align: center;
+            font-size: 45px;
+            max-width: 100%;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .upload-container {
+            margin-top: 20px;
+        }
+
+        #drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 80px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #drop-area.highlight {
+            border-color: #3498db;
+            background-color: #ecf0f1;
+        }
+
+        #fileElem {
+            display: none;
+        }
+
+        #startScan {
+            display: block;
+            width: 100%;
+            padding: 19px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 19px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #startScan:hover {
+            background-color: #2980b9;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+
+        #result-section {
+            position: relative;
+            max-width: 1200px;
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .clipboard-icon {
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        #text-output {
+            min-height: 100px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        #spinner {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .alert {
+            display: none;
+            color: white;
+            background-color: #e74c3c;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out, fadeOut 0.5s ease-in-out 3s;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e6f5f0;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6d796e;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #007ea6;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav a {
+                font-size: 14px;
+            }
+
+            .nav ul {
+                flex-direction: row;
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .nav li {
+                margin-right: 15px;
+            }
+
+            h1 {
+                font-size: 30px;
+                margin-top: 20px;
+            }
+
+            #drop-area {
+                padding: 20px;
+            }
+
+            #startScan {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .file-name {
+                font-size: 14px;
+            }
+
+            #result-section {
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .clipboard-icon {
+                bottom: 10px;
+                right: 10px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="dashboard.html" class="logo"><span>3M-</span>SECURE</a>
+        <nav class="nav">
+            <ul>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Detect Suspicious Activities with AI-Powered Analysis</h1>
+    <main>
+
+        <div class="upload-container">
+            <div id="drop-area">
+                <p>Drag and drop your log file here, or click to upload</p>
+                <input type="file" id="fileElem" accept=".txt">
+            </div>
+            <p>only .txt file scan allowed</p>
+            <div class="file-name" id="file-name"></div>
+            <button id="startScan">Start Scan</button>
+        </div>
+        <div id="spinner"></div>
+        <div id="alert" class="alert">
+    </main>
+    <section id="result-section">
+        <h2>Generated Report</h2>
+        <div id="text-output"></div>
+        <img src="images/clip.png" alt="Copy to clipboard" class="clipboard-icon" id="clipboard-icon">
+    </section>
+    <script>
+        let userID = sessionStorage.getItem("userID");
+
+        if (!userID) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "https://esm.run/@google/generative-ai";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOu_01IAtFujx33_ZBFXq5KOQXUytomi0",
+            authDomain: "guardpointx.firebaseapp.com",
+            databaseURL: "https://guardpointx-default-rtdb.firebaseio.com",
+            projectId: "guardpointx",
+            storageBucket: "guardpointx.appspot.com",
+            messagingSenderId: "1002461591352",
+            appId: "1:1002461591352:web:35530624b69ecc90f1f3cd",
+            measurementId: "G-X44KLQK52W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userID = user.uid;
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userID = sessionStorage.getItem("userID");
+
+            if (userID) {
+                try {
+                    const userRef = ref(database, `users/${userID}`);
+                    const snapshot = await get(userRef);
+
+                    if (snapshot.exists()) {
+                        console.log("User ID is valid.");
+                    } else {
+                        console.log("User ID not found.");
+                        window.location.href = "login.html";
+                    }
+                } catch (error) {
+                    console.error("Error checking user ID:", error);
+                    window.location.href = "login.html";
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+
+        const dropArea = document.getElementById('drop-area');
+        const fileElem = document.getElementById('fileElem');
+        const fileNameDisplay = document.getElementById('file-name');
+        const startScanButton = document.getElementById('startScan');
+        const spinner = document.getElementById('spinner');
+        const resultSection = document.getElementById('result-section');
+        const textOutput = document.getElementById('text-output');
+        const alertDiv = document.getElementById('alert');
+        const clipboardIcon = document.getElementById("clipboard-icon");
+
+        const safetySettings = [
+            {
+                category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold: HarmBlockThreshold.BLOCK_NONE,
+            },
+        ];
+
+        let logFile;
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropArea.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            dropArea.classList.remove('highlight');
+        }
+
+        dropArea.addEventListener('drop', handleDrop, false);
+        dropArea.addEventListener('click', () => fileElem.click());
+        fileElem.addEventListener('change', () => handleFiles(fileElem.files));
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            handleFiles(dt.files);
+        }
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                logFile = files[0];
+                displayFileName(logFile.name);
+            }
+        }
+
+        function displayFileName(fileName) {
+            fileNameDisplay.textContent = `Uploaded file: ${fileName}`;
+        }
+
+        async function fileToGenerativePart(file) {
+            const base64EncodedDataPromise = new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(",")[1]);
+                reader.readAsDataURL(file);
+            });
+            return {
+                inlineData: {
+                    data: await base64EncodedDataPromise,
+                    mimeType: file.type,
+                },
+            };
+        }
+
+        async function generateTitleAndSaveReport(userID, reportContent, database) {
+            const genAI = new GoogleGenerativeAI("AIzaSyAMsNtgWQwURrtUbFPBFDpcH6enOos6Ji0");
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
+
+
+            try {
+                const titlePrompt = `please help me generate a 1 title for this report ${reportContent}. "dont anything explain just generate a title finish"`;
+                const titleResult = await model.generateContent(titlePrompt);
+                const generatedTitle = titleResult.response.text().trim();
+
+                const currentDate = new Date().toISOString();
+
+                const reportData = {
+                    title: generatedTitle,
+                    content: reportContent,
+                    date: currentDate
+                };
+
+                const reportRef = ref(database, `reports/${userID}`);
+                const newReportRef = push(reportRef);
+                await set(newReportRef, reportData);
+
+                console.log('Report saved successfully with generated title');
+                return generatedTitle;
+            } catch (error) {
+                console.error('Error generating title or saving report: ', error);
+                throw error;
+            }
+        }
+
+        function formatText(text) {
+            text = text.replace(/## (.*?)(\n|$)/g, '<b>$1</b>$2');
+            text = text.replace(/\*\*(.*?)\*\*/g, '<h4>$1</h4>');
+            text = text.replace(/\* (.*?)(\n|$)/g, '<li>$1</li>');
+            text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+            text = text.replace(/\*/g, '');
+            return text;
+        }
+
+        startScanButton.addEventListener('click', async () => {
+            const promptText = `check this log file for any malicious activities and generate a report on your findings`;
+
+            if (logFile && promptText) {
+                spinner.style.display = "block";
+                resultSection.style.display = "none";
+                alertDiv.style.display = "none";
+
+                try {
+                    const logPart = await fileToGenerativePart(logFile);
+                    const prompt = [promptText, logPart];
+
+                    const genAI = new GoogleGenerativeAI("AIzaSyAMsNtgWQwURrtUbFPBFDpcH6enOos6Ji0");
+                    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", safetySettings });
+
+                    const result = await model.generateContent(prompt);
+                    const response = await result.response;
+                    const text = await response.text();
+
+                    const formattedText = formatText(text);
+
+                    const title = await generateTitleAndSaveReport(userID, formattedText, database);
+
+                    spinner.style.display = "none";
+                    resultSection.style.display = "block";
+                    textOutput.innerHTML = `<h3>${title}</h3>${formattedText}`;
+                } catch (error) {
+                    console.error('Error:', error);
+                    alertDiv.textContent = "An error occurred while processing the file.";
+                    alertDiv.style.display = "block";
+                    spinner.style.display = "none";
+                }
+            } else {
+                alertDiv.textContent = "Please upload a log file before starting the scan.";
+                alertDiv.style.display = "block";
+                setTimeout(() => {
+                    alertDiv.style.display = "none";
+                }, 2000);
+            }
+        });
+
+        clipboardIcon.addEventListener('click', () => {
+            const range = document.createRange();
+            range.selectNodeContents(textOutput);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+            alert('Report copied to clipboard');
+        });
+    </script>
+
+</body>
+
+</html>

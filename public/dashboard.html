@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3M-SECURE Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <link rel="icon" sizes="16x16" href="images/3msecure.svg" type="image/x-svg" />
+    <style>
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1c3144;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 37px;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            border: none;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #7ED957;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav li {
+            margin-right: 40px;
+        }
+
+        .nav a {
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            font-size: 25px;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #28a745;
+        }
+
+
+        .dashboard {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            flex: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .card-title {
+            font-size: 19px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            height: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .new-scan-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            /* Increased padding */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            /* Increased font size */
+            margin: 0 auto;
+            display: block;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .new-scan-btn:hover {
+            background-color: #1976D2;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #e6f5f0;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1c3144;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2f5e86;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-content-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-date {
+            font-size: 16px;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav ul {
+                padding: 10px 0;
+            }
+
+            .nav li {
+                margin-right: 15px;
+            }
+
+            .nav a {
+                font-size: 16px;
+            }
+
+            .dashboard {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .card {
+                flex-basis: calc(50% - 5px);
+                padding: 15px;
+            }
+
+            .card-title {
+                font-size: 14px;
+            }
+
+            .card-value {
+                font-size: 24px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .new-scan-btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .modal-content-text {
+                font-size: 14px;
+            }
+
+            .modal-date {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="dashboard.html" class="logo"><span>3M-</span>SECURE</a>
+        <nav class="nav">
+            <ul>
+                <li><a href="chatbot.html" class="active">ChatBot</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-title">Number of Scans</div>
+                <div class="card-value" id="number-of-scans">0</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Reports Generated</div>
+                <div class="card-value" id="reports-generated">0</div>
+            </div>
+        </div>
+        <div class="chart-container" id="chart"></div>
+        <button class="new-scan-btn" id="new-scan-btn">New Scan</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date and Time</th>
+                </tr>
+            </thead>
+            <tbody id="reports-table-body">
+            </tbody>
+        </table>
+
+    </div>
+
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-content-text" id="modal-content-text"></div>
+            <div class="modal-date" id="modal-date"></div>
+        </div>
+    </div>
+    <script>
+        const userID = sessionStorage.getItem("userID");
+
+        if (!userID) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, child, get, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOu_01IAtFujx33_ZBFXq5KOQXUytomi0",
+            authDomain: "guardpointx.firebaseapp.com",
+            databaseURL: "https://guardpointx-default-rtdb.firebaseio.com",
+            projectId: "guardpointx",
+            storageBucket: "guardpointx.appspot.com",
+            messagingSenderId: "1002461591352",
+            appId: "1:1002461591352:web:35530624b69ecc90f1f3cd",
+            measurementId: "G-X44KLQK52W"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        const chartDom = document.getElementById('chart');
+        const myChart = echarts.init(chartDom);
+
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userID = user.uid;
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userID = sessionStorage.getItem("userID");
+
+            if (userID) {
+                try {
+                    const userRef = ref(database, `users/${userID}`);
+                    const snapshot = await get(userRef);
+
+                    if (snapshot.exists()) {
+                        console.log("User ID is valid.");
+                        // Continue with page functionality
+                    } else {
+                        console.log("User ID not found.");
+                        window.location.href = "login.html";
+                    }
+                } catch (error) {
+                    console.error("Error checking user ID:", error);
+                    window.location.href = "login.html";
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function fetchReports() {
+            if (!userID) {
+                console.error('No user ID found in session storage');
+                return;
+            }
+
+            const reportRef = ref(database, `reports/${userID}`);
+            const logRef = ref(database, `scan_logs/${userID}`);
+
+            get(reportRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const reports = snapshot.val();
+                    const reportCounts = {};
+
+                    let numberOfScans = 0;
+                    let reportsGenerated = 0;
+                    const tableBody = document.getElementById('reports-table-body');
+
+                    get(logRef).then((logSnapshot) => {
+                        if (logSnapshot.exists()) {
+                            const logs = logSnapshot.val();
+                            numberOfScans = Object.keys(logs).length;
+                        }
+
+                        document.getElementById('number-of-scans').textContent = numberOfScans;
+                        document.getElementById('reports-generated').textContent = reportsGenerated;
+
+                        updateChart(days, scanCounts);
+                    }).catch((error) => {
+                        console.error('Error fetching scan logs: ', error);
+                    });
+
+                    if (tableBody) {
+                        tableBody.innerHTML = '';
+                    }
+
+                    for (const key in reports) {
+                        if (reports.hasOwnProperty(key)) {
+                            const report = reports[key];
+                            const date = new Date(report.date).toISOString().split('T')[0];
+                            reportCounts[date] = (reportCounts[date] || 0) + 1;
+
+                            const row = document.createElement('tr');
+                            const titleCell = document.createElement('td');
+                            const dateCell = document.createElement('td');
+                            titleCell.textContent = report.title || 'Untitled Report';
+                            dateCell.textContent = new Date(report.date).toLocaleString();
+                            row.appendChild(titleCell);
+                            row.appendChild(dateCell);
+                            row.dataset.title = report.title || 'Untitled Report';
+                            row.dataset.content = report.content || 'No content available';
+                            row.dataset.date = new Date(report.date).toLocaleString();
+                            tableBody.appendChild(row);
+
+                            row.addEventListener('click', () => {
+                                showModal(row.dataset.title, row.dataset.content, row.dataset.date);
+                            });
+
+                            reportsGenerated++;
+                        }
+                    }
+
+                    const days = Object.keys(reportCounts);
+                    const scanCounts = Object.values(reportCounts);
+
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error('Error fetching reports: ', error);
+            });
+        }
+
+        function updateChart(days, scanCounts) {
+            const option = {
+                title: {
+                    text: 'Reports Generated Over Time'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: days
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: scanCounts,
+                    type: 'line',
+                    smooth: true,
+                    animationDuration: 2000,
+                    animationEasing: 'cubicInOut',
+                    itemStyle: {
+                        color: '#4CAF50'
+                    },
+                    lineStyle: {
+                        color: '#4CAF50'
+                    },
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: 'Max'
+                        }, {
+                            type: 'min',
+                            name: 'Min'
+                        }]
+                    },
+                    markLine: {
+                        data: [{
+                            type: 'average',
+                            name: 'Average'
+                        }]
+                    }
+                }]
+            };
+
+            myChart.setOption(option);
+        }
+
+        function logScanInitiation() {
+            const logRef = ref(database, `scan_logs/${userID}`);
+            const newLog = {
+                timestamp: serverTimestamp(),
+                message: "New scan initiated by user"
+            };
+
+            push(logRef, newLog)
+                .then(() => {
+                    console.log("Scan initiation logged successfully");
+                    window.location.href = "file-scan.html";
+                })
+                .catch((error) => {
+                    console.error("Error logging scan initiation: ", error);
+                });
+        }
+
+        function showModal(title, content, date) {
+            const modal = document.getElementById('reportModal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContentText = document.getElementById('modal-content-text');
+            const modalDate = document.getElementById('modal-date');
+
+            modalTitle.textContent = title;
+            modalContentText.innerHTML = content; // Use innerHTML to render HTML content
+            modalDate.textContent = date;
+
+            modal.style.display = 'block';
+        }
+
+
+        function closeModal() {
+            const modal = document.getElementById('reportModal');
+            modal.style.display = 'none';
+        }
+
+        document.querySelector('.modal-close').addEventListener('click', closeModal);
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('reportModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+
+        fetchReports();
+
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+
+        document.getElementById('new-scan-btn').addEventListener('click', function () {
+            logScanInitiation();
+        });
+
+        document.querySelector('.new-scan-btn').addEventListener('mouseover', function () {
+            this.style.transform = 'scale(1.05)';
+        });
+
+        document.querySelector('.new-scan-btn').addEventListener('mouseout', function () {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+
+</html>
